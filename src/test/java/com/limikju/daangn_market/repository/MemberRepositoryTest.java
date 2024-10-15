@@ -22,7 +22,7 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("회원 레포지토리 삽입")
     @Transactional
-    void memberInsertTest() {
+    void memberJoinTest() {
         MemberDto memberDto = MemberDto.builder()
                 .email(UUID.randomUUID().toString() + "@gmail.com")
                 .password("1234")
@@ -37,7 +37,7 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("회원 레포지토리 삽입 email 중복 실패")
     @Transactional
-    void memberInsertEmailDuplicateTest() {
+    void memberJoinEmailDuplicateTest() {
         // given
         String email = UUID.randomUUID().toString() + "@gmail.com";
 
