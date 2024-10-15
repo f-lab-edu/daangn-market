@@ -4,14 +4,11 @@ import com.limikju.daangn_market.domain.common.BaseEntity;
 import com.limikju.daangn_market.domain.enums.Role;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
 
     //primary Key
     private Long id;
