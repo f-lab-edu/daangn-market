@@ -1,8 +1,7 @@
 package com.limikju.daangn_market.service;
 
 import com.limikju.daangn_market.domain.Member;
-import com.limikju.daangn_market.domain.dto.MemberDto;
-import com.limikju.daangn_market.domain.enums.Role;
+import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import com.limikju.daangn_market.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,15 +25,14 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 서비스 join")
     void memberJoinTest() {
-        MemberDto memberDto = MemberDto.builder()
+        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
                 .email(UUID.randomUUID().toString() + "@gmail.com")
                 .password("1234")
                 .name("limikju")
                 .phone("010-1234-5678")
                 .address("서울시 강남구")
-                .role(Role.USER)
                 .build();
-        memberService.join(memberDto);
+        memberService.join(memberSignUpDto);
     }
 
     @Test
@@ -43,21 +41,20 @@ class MemberServiceTest {
     void memberInsertTest() {
         //given
         String password = "1234";
-        MemberDto memberDto = MemberDto.builder()
+        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
                 .email(UUID.randomUUID().toString() + "@gmail.com")
                 .password(password)
                 .name("limikju")
                 .phone("010-1234-5678")
                 .address("서울시 강남구")
-                .role(Role.USER)
                 .build();
-        memberService.join(memberDto);
+        memberService.join(memberSignUpDto);
 
         //when
-        Member member = memberRepository.findByEmail(memberDto.getEmail());
+        Member member = memberRepository.findByEmail(memberSignUpDto.getEmail());
 
         //then
         assertNotEquals(password, member.getPassword());
-        assertNotEquals(password, memberDto.getPassword());
+        assertNotEquals(password, memberSignUpDto.getPassword());
     }
 }

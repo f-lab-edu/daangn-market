@@ -1,8 +1,7 @@
 package com.limikju.daangn_market.repository;
 
 import com.limikju.daangn_market.domain.Member;
-import com.limikju.daangn_market.domain.dto.MemberDto;
-import com.limikju.daangn_market.domain.enums.Role;
+import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +22,14 @@ class MemberRepositoryTest {
     @DisplayName("회원 레포지토리 삽입")
     @Transactional
     void memberJoinTest() {
-        MemberDto memberDto = MemberDto.builder()
+        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
                 .email(UUID.randomUUID().toString() + "@gmail.com")
                 .password("1234")
                 .name("limikju")
                 .phone("010-1234-5678")
                 .address("서울시 강남구")
-                .role(Role.USER)
                 .build();
-        memberRepository.join(memberDto);
+        memberRepository.join(memberSignUpDto);
     }
 
     @Test
@@ -42,24 +40,22 @@ class MemberRepositoryTest {
         String email = UUID.randomUUID().toString() + "@gmail.com";
 
         // when
-        memberRepository.join(MemberDto.builder()
+        memberRepository.join(MemberSignUpDto.builder()
                 .email(email)
                 .password("1234")
                 .name("limikju")
                 .phone("010-1234-5678")
                 .address("서울시 강남구")
-                .role(Role.USER)
                 .build());
 
         // then
         assertThrows(Exception.class, () -> {
-            memberRepository.join(MemberDto.builder()
+            memberRepository.join(MemberSignUpDto.builder()
                     .email(email)
                     .password("1234")
                     .name("limikju")
                     .phone("010-1234-5678")
                     .address("서울시 강남구")
-                    .role(Role.USER)
                     .build());
         });
     }
@@ -71,25 +67,23 @@ class MemberRepositoryTest {
     void findByMemberTest() {
         // given
         String email = UUID.randomUUID().toString() + "@gmail.com";
-        MemberDto memberDto = MemberDto.builder()
+        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
                 .email(email)
                 .password("1234")
                 .name("limikju")
                 .phone("010-1234-5678")
                 .address("서울시 강남구")
-                .role(Role.USER)
                 .build();
 
         // when
-        memberRepository.join(memberDto);
+        memberRepository.join(memberSignUpDto);
 
         // then
         Member member = memberRepository.findByEmail(email);
-        assertThat(member.getEmail()).isEqualTo(memberDto.getEmail());
-        assertThat(member.getPassword()).isEqualTo(memberDto.getPassword());
-        assertThat(member.getName()).isEqualTo(memberDto.getName());
-        assertThat(member.getPhone()).isEqualTo(memberDto.getPhone());
-        assertThat(member.getAddress()).isEqualTo(memberDto.getAddress());
-        assertThat(member.getRole()).isEqualTo(memberDto.getRole());
+        assertThat(member.getEmail()).isEqualTo(memberSignUpDto.getEmail());
+        assertThat(member.getPassword()).isEqualTo(memberSignUpDto.getPassword());
+        assertThat(member.getName()).isEqualTo(memberSignUpDto.getName());
+        assertThat(member.getPhone()).isEqualTo(memberSignUpDto.getPhone());
+        assertThat(member.getAddress()).isEqualTo(memberSignUpDto.getAddress());
     }
 }
