@@ -79,7 +79,7 @@ class MemberRepositoryTest {
         memberRepository.join(memberSignUpDto);
 
         // then
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmail(email).orElseThrow();
         assertThat(member.getEmail()).isEqualTo(memberSignUpDto.getEmail());
         assertThat(member.getPassword()).isEqualTo(memberSignUpDto.getPassword());
         assertThat(member.getName()).isEqualTo(memberSignUpDto.getName());

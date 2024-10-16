@@ -51,7 +51,7 @@ class MemberServiceTest {
         memberService.join(memberSignUpDto);
 
         //when
-        Member member = memberRepository.findByEmail(memberSignUpDto.getEmail());
+        Member member = memberRepository.findByEmail(memberSignUpDto.getEmail()).orElseThrow();
 
         //then
         assertNotEquals(password, member.getPassword());
