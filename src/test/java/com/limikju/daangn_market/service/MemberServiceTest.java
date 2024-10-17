@@ -24,6 +24,7 @@ class MemberServiceTest {
 
   @Test
   @DisplayName("회원 서비스 join")
+  @Transactional
   void memberJoinTest() {
     MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
         .email(UUID.randomUUID().toString() + "@gmail.com")
