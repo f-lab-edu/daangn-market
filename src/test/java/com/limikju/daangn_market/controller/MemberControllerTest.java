@@ -27,138 +27,138 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Nested
 class MemberControllerTest {
 
-    @Autowired
-    MockMvc mvc;
-    @Autowired
-    MemberRepository memberRepository;
+  @Autowired
+  MockMvc mvc;
+  @Autowired
+  MemberRepository memberRepository;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+  ObjectMapper objectMapper = new ObjectMapper();
 
-    @Test
-    @DisplayName("회원가입 성공")
-    @Transactional
-    void signUpTest() throws Exception {
-        //given
-        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
-                .email(UUID.randomUUID().toString() + "@gmail.com")
-                .password("Q1w2e3r4!")
-                .name("limikju")
-                .phone("010-1234-5678")
-                .address("서울시 강남구 역삼동")
-                .build();
+  @Test
+  @DisplayName("회원가입 성공")
+  @Transactional
+  void signUpTest() throws Exception {
+    //given
+    MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
+        .email(UUID.randomUUID().toString() + "@gmail.com")
+        .password("Q1w2e3r4!")
+        .name("limikju")
+        .phone("010-1234-5678")
+        .address("서울시 강남구 역삼동")
+        .build();
 
-        //when
-        mvc.perform(
-                        post("/api/members")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(memberSignUpDto)))
-                .andExpect(status().isCreated());
+    //when
+    mvc.perform(
+            post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSignUpDto)))
+        .andExpect(status().isCreated());
 
-        //then
-        Member member = memberRepository.findByEmail(memberSignUpDto.getEmail()).orElseThrow();
-        Assertions.assertThat(memberSignUpDto.getEmail()).isEqualTo(member.getEmail());
-        Assertions.assertThat(memberSignUpDto.getName()).isEqualTo(member.getName());
-        Assertions.assertThat(memberSignUpDto.getPhone()).isEqualTo(member.getPhone());
-        Assertions.assertThat(memberSignUpDto.getAddress()).isEqualTo(member.getAddress());
-    }
+    //then
+    Member member = memberRepository.findByEmail(memberSignUpDto.getEmail()).orElseThrow();
+    Assertions.assertThat(memberSignUpDto.getEmail()).isEqualTo(member.getEmail());
+    Assertions.assertThat(memberSignUpDto.getName()).isEqualTo(member.getName());
+    Assertions.assertThat(memberSignUpDto.getPhone()).isEqualTo(member.getPhone());
+    Assertions.assertThat(memberSignUpDto.getAddress()).isEqualTo(member.getAddress());
+  }
 
-    @Test
-    @DisplayName("회원가입 실패 - 이메일")
-    void signUpFailEmailTest() throws Exception {
-        //given
-        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
-                .email(UUID.randomUUID().toString() + "gmail.com")
-                .password("Q1w2e3r4!")
-                .name("limikju")
-                .phone("010-1234-5678")
-                .address("서울시 강남구 역삼동")
-                .build();
+  @Test
+  @DisplayName("회원가입 실패 - 이메일")
+  void signUpFailEmailTest() throws Exception {
+    //given
+    MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
+        .email(UUID.randomUUID().toString() + "gmail.com")
+        .password("Q1w2e3r4!")
+        .name("limikju")
+        .phone("010-1234-5678")
+        .address("서울시 강남구 역삼동")
+        .build();
 
-        //when, then
-        mvc.perform(
-                        post("/api/members")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(memberSignUpDto)))
-                .andExpect(status().isBadRequest());
-    }
+    //when, then
+    mvc.perform(
+            post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSignUpDto)))
+        .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    @DisplayName("회원가입 실패 - 비밀번호")
-    void signUpFailPasswordTest() throws Exception {
-        //given
-        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
-                .email(UUID.randomUUID().toString() + "@gmail.com")
-                .password("1234")
-                .name("limikju")
-                .phone("010-1234-5678")
-                .address("서울시 강남구 역삼동")
-                .build();
+  @Test
+  @DisplayName("회원가입 실패 - 비밀번호")
+  void signUpFailPasswordTest() throws Exception {
+    //given
+    MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
+        .email(UUID.randomUUID().toString() + "@gmail.com")
+        .password("1234")
+        .name("limikju")
+        .phone("010-1234-5678")
+        .address("서울시 강남구 역삼동")
+        .build();
 
-        //when, then
-        mvc.perform(
-                        post("/api/members")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(memberSignUpDto)))
-                .andExpect(status().isBadRequest());
-    }
+    //when, then
+    mvc.perform(
+            post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSignUpDto)))
+        .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    @DisplayName("회원가입 실패 - 이름")
-    void signUpFailNameTest() throws Exception {
-        //given
-        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
-                .email(UUID.randomUUID().toString() + "@gmail.com")
-                .password("Q1w2e3r4!")
-                .name("김")
-                .phone("010-1234-5678")
-                .address("서울시 강남구 역삼동")
-                .build();
+  @Test
+  @DisplayName("회원가입 실패 - 이름")
+  void signUpFailNameTest() throws Exception {
+    //given
+    MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
+        .email(UUID.randomUUID().toString() + "@gmail.com")
+        .password("Q1w2e3r4!")
+        .name("김")
+        .phone("010-1234-5678")
+        .address("서울시 강남구 역삼동")
+        .build();
 
-        //when, then
-        mvc.perform(
-                        post("/api/members")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(memberSignUpDto)))
-                .andExpect(status().isBadRequest());
-    }
+    //when, then
+    mvc.perform(
+            post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSignUpDto)))
+        .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    @DisplayName("회원가입 실패 - 전화번호")
-    void signUpFailPhoneTest() throws Exception {
-        //given
-        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
-                .email(UUID.randomUUID().toString() + "@gmail.com")
-                .password("Q1w2e3r4!")
-                .name("limikju")
-                .phone("01012345678")
-                .address("서울시 강남구 역삼동")
-                .build();
+  @Test
+  @DisplayName("회원가입 실패 - 전화번호")
+  void signUpFailPhoneTest() throws Exception {
+    //given
+    MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
+        .email(UUID.randomUUID().toString() + "@gmail.com")
+        .password("Q1w2e3r4!")
+        .name("limikju")
+        .phone("01012345678")
+        .address("서울시 강남구 역삼동")
+        .build();
 
-        //when, then
-        mvc.perform(
-                        post("/api/members")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(memberSignUpDto)))
-                .andExpect(status().isBadRequest());
-    }
+    //when, then
+    mvc.perform(
+            post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSignUpDto)))
+        .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    @DisplayName("회원가입 실패 - 주소")
-    void signUpFailAdderssTest() throws Exception {
-        //given
-        MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
-                .email(UUID.randomUUID().toString() + "@gmail.com")
-                .password("Q1w2e3r4!")
-                .name("limikju")
-                .phone("010-1234-5678")
-                .address("서울시 강남구")
-                .build();
+  @Test
+  @DisplayName("회원가입 실패 - 주소")
+  void signUpFailAdderssTest() throws Exception {
+    //given
+    MemberSignUpDto memberSignUpDto = MemberSignUpDto.builder()
+        .email(UUID.randomUUID().toString() + "@gmail.com")
+        .password("Q1w2e3r4!")
+        .name("limikju")
+        .phone("010-1234-5678")
+        .address("서울시 강남구")
+        .build();
 
-        //when, then
-        mvc.perform(
-                        post("/api/members")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(memberSignUpDto)))
-                .andExpect(status().isBadRequest());
-    }
+    //when, then
+    mvc.perform(
+            post("/api/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSignUpDto)))
+        .andExpect(status().isBadRequest());
+  }
 }

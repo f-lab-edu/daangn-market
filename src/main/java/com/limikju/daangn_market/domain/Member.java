@@ -10,24 +10,24 @@ import lombok.*;
 @Builder
 public class Member extends BaseEntity {
 
-    //primary Key
-    private Long id;
+  //primary Key
+  private Long id;
 
-    //email
-    private String email;
+  //email
+  private String email;
 
-    //비밀번호
-    private String password;
+  //비밀번호
+  private String password;
 
-    //이름
-    private String name;
+  //이름
+  private String name;
 
-    //전화번호
-    private String phone;
+  //전화번호
+  private String phone;
 
-    //주소
-    private String address;
+  //주소
+  private String address;
 
-    //권한 -> USER, ADMIN
-    private Role role;
+  //권한 -> USER, ADMIN
+  private Role role;
 }

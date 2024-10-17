@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
 public class MemberController {
-    private final MemberService memberService;
 
-    @PostMapping
-    public ResponseEntity<?> singUp(@RequestBody @Valid MemberSignUpDto memberSignUpDto) {
-        memberService.join(memberSignUpDto);
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
+  private final MemberService memberService;
+
+  @PostMapping
+  public ResponseEntity<?> singUp(@RequestBody @Valid MemberSignUpDto memberSignUpDto) {
+    memberService.join(memberSignUpDto);
+    return new ResponseEntity(HttpStatus.CREATED);
+  }
 }

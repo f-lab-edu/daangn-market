@@ -8,7 +8,9 @@ import java.util.Optional;
 
 @Mapper
 public interface MemberRepository {
-//    @Insert("INSERT INTO MEMBER(email, password, name, phone, address, role) VALUES(#{email}, #{password}, #{name}, #{phone}, #{address}, #{role})")
-    public void join(MemberSignUpDto memberSignUpDto);
-    public Optional<Member> findByEmail(String email);
+
+  //    @Insert("INSERT INTO MEMBER(email, password, name, phone, address, role) VALUES(#{email}, #{password}, #{name}, #{phone}, #{address}, #{role})")
+  public void join(MemberSignUpDto memberSignUpDto);
+
+  public Optional<Member> findByEmail(String email);
 }

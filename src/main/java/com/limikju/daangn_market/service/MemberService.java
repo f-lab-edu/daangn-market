@@ -10,16 +10,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public void join(MemberSignUpDto memberSignUpDto) {
-        memberSignUpDto.setPassword(passwordEncoder.encode(memberSignUpDto.getPassword()));
-        try {
-            memberRepository.join(memberSignUpDto);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
-        }
+  private final MemberRepository memberRepository;
+  private final PasswordEncoder passwordEncoder;
+
+  public void join(MemberSignUpDto memberSignUpDto) {
+    memberSignUpDto.setPassword(passwordEncoder.encode(memberSignUpDto.getPassword()));
+    try {
+      memberRepository.join(memberSignUpDto);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("이미 가입된 이메일입니다.");
     }
+  }
 }
 

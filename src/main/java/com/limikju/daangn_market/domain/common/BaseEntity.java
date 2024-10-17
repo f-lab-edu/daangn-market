@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Getter
 public abstract class BaseEntity {
 
-    private LocalDateTime createdAt;
+  private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+  private LocalDateTime updatedAt;
 }

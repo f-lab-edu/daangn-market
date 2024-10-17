@@ -18,19 +18,21 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class MyBatisConfig {
 
-    @Value("${mybatis.mapper-locations}")
-    String mPath;
+  @Value("${mybatis.mapper-locations}")
+  String mPath;
 
-    @Bean(name = "SqlSessionFactory")
-    public SqlSessionFactory SqlSessionFactory(@Qualifier("dataSource") DataSource DataSource, ApplicationContext applicationContext) throws Exception {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(DataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources(mPath));
-        return sqlSessionFactoryBean.getObject();
-    }
+  @Bean(name = "SqlSessionFactory")
+  public SqlSessionFactory SqlSessionFactory(@Qualifier("dataSource") DataSource DataSource,
+      ApplicationContext applicationContext) throws Exception {
+    SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+    sqlSessionFactoryBean.setDataSource(DataSource);
+    sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources(mPath));
+    return sqlSessionFactoryBean.getObject();
+  }
 
-    @Bean(name = "SessionTemplate")
-    public SqlSessionTemplate SqlSessionTemplate(@Qualifier("SqlSessionFactory") SqlSessionFactory firstSqlSessionFactory) {
-        return new SqlSessionTemplate(firstSqlSessionFactory);
-    }
+  @Bean(name = "SessionTemplate")
+  public SqlSessionTemplate SqlSessionTemplate(
+      @Qualifier("SqlSessionFactory") SqlSessionFactory firstSqlSessionFactory) {
+    return new SqlSessionTemplate(firstSqlSessionFactory);
+  }
 }
