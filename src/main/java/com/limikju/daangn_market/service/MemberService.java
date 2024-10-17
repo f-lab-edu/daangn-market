@@ -4,8 +4,10 @@ import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import com.limikju.daangn_market.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +17,11 @@ public class MemberService {
   private final PasswordEncoder passwordEncoder;
 
   public void join(MemberSignUpDto memberSignUpDto) {
-    memberRepository.findByEmail(memberSignUpDto.getEmail()).ifPresent(member -> {
-      throw new IllegalArgumentException("이미 가입된 이메일입니다.");
-    });
-
     memberSignUpDto.setPassword(passwordEncoder.encode(memberSignUpDto.getPassword()));
     try {
       memberRepository.join(memberSignUpDto);
-    } catch (Exception e) {
-      throw new IllegalArgumentException("회원가입에 실패했습니다.");
+    }catch (DataIntegrityViolationException ex){
+      throw new IllegalArgumentException("이미 가입된 이메일입니다.");
     }
   }
 }
