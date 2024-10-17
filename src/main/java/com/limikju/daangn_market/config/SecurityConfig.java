@@ -14,23 +14,23 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private static final String[] AUTH_WHITELIST = {
-            "/api/member",
-            "/api/member/login"
-    };
+  private static final String[] AUTH_WHITELIST = {
+    "/api/member",
+    "/api/member/login"
+  };
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .httpBasic(HttpBasicConfigurer::disable)
-                .formLogin(FormLoginConfigurer::disable)
-                .csrf(CsrfConfigurer::disable)
-                .cors(CorsConfigurer::disable)
-                .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .anyRequest().authenticated()
-                );
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .httpBasic(HttpBasicConfigurer::disable)
+        .formLogin(FormLoginConfigurer::disable)
+        .csrf(CsrfConfigurer::disable)
+        .cors(CorsConfigurer::disable)
+        .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers(AUTH_WHITELIST).permitAll()
+            .anyRequest().authenticated()
+        );
+    return http.build();
+  }
 }
