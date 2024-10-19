@@ -1,6 +1,5 @@
 package com.limikju.daangn_market.controller;
 
-import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import com.limikju.daangn_market.service.MemberService;
 import jakarta.validation.Valid;
