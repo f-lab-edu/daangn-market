@@ -9,14 +9,16 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
   private static final String[] AUTH_WHITELIST = {
-    "/api/member",
-    "/api/member/login"
+    "/api/members",
+    "/api/members/login"
   };
 
   @Bean
@@ -32,5 +34,10 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         );
     return http.build();
+  }
+  
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   }
 }
