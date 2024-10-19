@@ -17,8 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
   private static final String[] AUTH_WHITELIST = {
-    "/api/member",
-    "/api/member/login"
+    "/api/members",
+    "/api/members/login"
   };
 
   @Bean
