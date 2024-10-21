@@ -1,6 +1,12 @@
 #Server configuration
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 259200 # 3 days
+      cookie:
+        max-age: 259200 # 3 days
+        http-only: true
 
 # Database configuration
 spring:
