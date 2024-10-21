@@ -6,6 +6,7 @@ import com.limikju.daangn_market.login.filter.CustomAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
@@ -31,7 +32,8 @@ public class SecurityConfig {
   private static final String[] AUTH_WHITELIST = {
       signUpUrl,
       loginUrl,
-      logoutUrl
+      logoutUrl,
+      "/error"
   };
 
   @Bean
@@ -44,7 +46,14 @@ public class SecurityConfig {
             .requestMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated()
         )
-        .addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .logout(logout -> logout
+            .logoutUrl(logoutUrl)
+            .logoutSuccessHandler((request, response, authentication) -> response.setStatus(
+                HttpStatus.OK.value()))
+            .invalidateHttpSession(true)
+            .permitAll()
+        );
     return http.build();
   }
 
@@ -55,12 +64,14 @@ public class SecurityConfig {
 
   @Bean
   public CustomAuthenticationFilter ajaxAuthenticationFilter() throws Exception {
-    CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(loginUrl);
+    CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(
+        loginUrl);
     customAuthenticationFilter.setAuthenticationManager(
         authenticationConfiguration.getAuthenticationManager()
     );
     customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
-    customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandlerHandler);
+    customAuthenticationFilter.setAuthenticationFailureHandler(
+        customAuthenticationFailureHandlerHandler);
 
     return customAuthenticationFilter;
   }
