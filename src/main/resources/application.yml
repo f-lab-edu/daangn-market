@@ -1,6 +1,12 @@
 #Server configuration
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 259200 # 3 days
+      cookie:
+        max-age: 259200 # 3 days
+        http-only: true
 
 # Database configuration
 spring:
@@ -9,6 +15,11 @@ spring:
     url: jdbc:mysql://${DB_HOST}/${DB_NAME}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
 
 # Mybatis configuration
 mybatis:
