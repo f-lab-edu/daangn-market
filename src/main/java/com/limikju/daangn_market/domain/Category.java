@@ -1,7 +1,11 @@
 package com.limikju.daangn_market.domain;
 
 import com.limikju.daangn_market.domain.common.BaseEntity;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
 public class Category extends BaseEntity {
 
   //primary Key

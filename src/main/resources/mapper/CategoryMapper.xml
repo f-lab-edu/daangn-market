@@ -9,4 +9,8 @@
     WHERE parent_id = #{id}
     );
   </select>
+
+  <select id="findByTitle" resultType="com.limikju.daangn_market.domain.Category">
+    SELECT * FROM CATEGORY WHERE title = #{title}
+  </select>
 </mapper>
