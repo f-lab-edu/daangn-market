@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.limikju.daangn_market.repository.ProductRepository">
+  <insert id="save" parameterType="com.limikju.daangn_market.domain.dto.ProductSaveDto">
+    INSERT INTO PRODUCT(owner_id, category_id, title, content, price)
+    VALUES(#{ownerId}, #{category.id}, #{title}, #{content}, #{price})
+  </insert>
+
+  <select id="findById" resultType="com.limikju.daangn_market.domain.Product">
+    SELECT * FROM PRODUCT WHERE id = #{id}
+  </select>
+
+  <update id="updateStatus">
+    UPDATE PRODUCT WHERE id = #{id} SET status = #{status}
+  </update>
+
+  <update id="updateProduct" parameterType="com.limikju.daangn_market.domain.dto.ProductUpdateDto">
+    UPDATE
+      PRODUCT
+    WHERE
+      id = #{id}
+    SET
+      category_id = #{category.id}
+      title = #{title}
+      content = #{content}
+      price = #{price}
+  </update>
+  
+  <update id="updateSortingTimestamp">
+    UPDATE
+      PRODUCT
+    WHERE
+      id = #{id}
+    SET
+      sorting_timestamp = NOW()
+  </update>
+</mapper>
