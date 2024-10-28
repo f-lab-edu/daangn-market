@@ -31,6 +31,6 @@ public class ProductService {
         SecurityUtil.getLoginUsername()).orElseThrow(()
         -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
 
-    productRepository.save(owner.getId(), productSaveDto);
+    productRepository.save(owner.getId(), category.getId(), productSaveDto.getTitle(), productSaveDto.getContent(), productSaveDto.getPrice());
   }
 }
