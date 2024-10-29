@@ -82,7 +82,6 @@ class ProductServiceTest {
     // given
     when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(category));
     when(categoryRepository.hasChild(category.getId())).thenReturn(false);
-    when(memberRepository.findByEmail(any())).thenReturn(Optional.of(member));
 
     // when & then
     assertDoesNotThrow(() -> productService.save(productSaveDto));
@@ -105,16 +104,5 @@ class ProductServiceTest {
 
     assertThrows(IllegalArgumentException.class, () ->
         productService.save(productSaveDto), "CATEGORY_HAS_CHILD");
-  }
-
-  @Test
-  @DisplayName("상품 저장 실패 - 회원 없음")
-  void save_throwsException_whenMemberNotFound() {
-    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(category));
-    when(categoryRepository.hasChild(category.getId())).thenReturn(false);
-    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.empty());
-
-    assertThrows(IllegalArgumentException.class, () ->
-        productService.save(productSaveDto), "MEMBER_NOT_FOUND");
   }
 }

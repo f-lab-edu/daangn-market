@@ -8,6 +8,7 @@ import com.limikju.daangn_market.repository.MemberRepository;
 import com.limikju.daangn_market.repository.ProductRepository;
 import com.limikju.daangn_market.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,9 +28,7 @@ public class ProductService {
       throw new IllegalArgumentException("CATEGORY_HAS_CHILD");
     }
 
-    Member owner = memberRepository.findByEmail(
-        SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+    Member owner = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     productRepository.save(owner.getId(), productSaveDto);
   }
