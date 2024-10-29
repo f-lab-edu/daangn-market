@@ -2,10 +2,10 @@ package com.limikju.daangn_market.login.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.limikju.daangn_market.domain.dto.MemberLoginDto;
+import com.limikju.daangn_market.login.CustomAuthenticationToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -34,7 +34,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     }
 
     // 미인증 상태 토큰 생성
-    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+    CustomAuthenticationToken token = new CustomAuthenticationToken(
         memberLoginDto.getEmail(),
         memberLoginDto.getPassword()
     );
