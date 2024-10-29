@@ -1,23 +1,28 @@
 package com.limikju.daangn_market.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductSaveDto {
 
   @NotBlank(message = "카테고리를 입력해주세요")
-  private String category;
+  public String category;
 
   @NotBlank(message = "제목을 입력해주세요")
-  private String title;
+  public String title;
 
-  private String content;
+  public String content;
 
-  @NotBlank(message = "가격을 입력해주세요")
+  @NotNull(message = "가격을 입력해주세요")
   @Positive(message = "가격은 양수이어야 합니다.")
-  private int price;
+  public int price;
 }

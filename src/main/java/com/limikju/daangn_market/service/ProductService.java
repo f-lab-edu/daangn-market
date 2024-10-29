@@ -30,6 +30,6 @@ public class ProductService {
 
     Member owner = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    productRepository.save(owner.getId(), productSaveDto);
+    productRepository.save(owner.getId(), category.getId(), productSaveDto.getTitle(), productSaveDto.getContent(), productSaveDto.getPrice());
   }
 }

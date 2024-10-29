@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ProductRepository {
-  public void save(Long ownerId, ProductSaveDto productSaveDto);
+  public void save(Long ownerId, Long categoryId, String title, String content, int price);
   public Optional<Product> findById(Long id);
   public void updateStatus(Long id);
   public void updateProduct(ProductUpdateDto productUpdateDto);
