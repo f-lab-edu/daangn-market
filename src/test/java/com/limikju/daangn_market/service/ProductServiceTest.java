@@ -2,12 +2,14 @@ package com.limikju.daangn_market.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
+import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
 import com.limikju.daangn_market.domain.enums.Role;
 import com.limikju.daangn_market.repository.CategoryRepository;
 import com.limikju.daangn_market.repository.MemberRepository;
@@ -125,5 +127,23 @@ class ProductServiceTest {
 
     // when & then
     assertDoesNotThrow(() -> productService.findById(1L));
+  }
+
+  @Test
+  @DisplayName("상품 정보 변경 성공")
+  void productUpdateTest() {
+    // given
+    ProductUpdateDto productUpdateDto = ProductUpdateDto.builder()
+        .id(1L)
+        .title("title")
+        .content("content")
+        .price(10000)
+        .category("TestCategory")
+        .build();
+
+    doNothing().when(productRepository).updateProduct(any(ProductUpdateDto.class));
+
+    // when & then
+    assertDoesNotThrow(() -> productService.updateProduct(productUpdateDto));
   }
 }

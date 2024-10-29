@@ -4,6 +4,7 @@ import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
+import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
 import com.limikju.daangn_market.repository.CategoryRepository;
 import com.limikju.daangn_market.repository.MemberRepository;
 import com.limikju.daangn_market.repository.ProductRepository;
@@ -40,5 +41,9 @@ public class ProductService {
     ProductInfoDto productInfo = productRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
     return productInfo;
+  }
+
+  public void updateProduct(ProductUpdateDto productUpdateDto) {
+    productRepository.updateProduct(productUpdateDto);
   }
 }
