@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
+import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
 import com.limikju.daangn_market.domain.enums.Role;
 import com.limikju.daangn_market.repository.CategoryRepository;
@@ -82,6 +83,7 @@ class ProductServiceTest {
     // given
     when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(category));
     when(categoryRepository.hasChild(category.getId())).thenReturn(false);
+    when(memberRepository.findByEmail(any())).thenReturn(Optional.of(member));
 
     // when & then
     assertDoesNotThrow(() -> productService.save(productSaveDto));
@@ -104,5 +106,24 @@ class ProductServiceTest {
 
     assertThrows(IllegalArgumentException.class, () ->
         productService.save(productSaveDto), "CATEGORY_HAS_CHILD");
+  }
+
+  @Test
+  @DisplayName("상품 조회 성공")
+  void productFindTest() {
+    // given
+    ProductInfoDto productInfoDto = ProductInfoDto.builder()
+        .id(1L)
+        .title("title")
+        .content("content")
+        .price(10000)
+        .category("TestCategory")
+        .ownerId(1L)
+        .createdDate("2021-08-01")
+        .build();
+    when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
+
+    // when & then
+    assertDoesNotThrow(() -> productService.findById(1L));
   }
 }

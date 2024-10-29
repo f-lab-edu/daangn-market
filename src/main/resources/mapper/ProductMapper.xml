@@ -7,7 +7,7 @@
     VALUES(#{ownerId}, #{categoryId}, #{title}, #{content}, #{price})
   </insert>
 
-  <select id="findById" resultType="com.limikju.daangn_market.domain.Product">
+  <select id="findById" resultType="com.limikju.daangn_market.domain.dto.ProductInfoDto">
     SELECT * FROM PRODUCT WHERE id = #{id}
   </select>
 
