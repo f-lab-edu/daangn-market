@@ -11,6 +11,7 @@ import com.limikju.daangn_market.repository.ProductRepository;
 import com.limikju.daangn_market.util.secutity.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,15 @@ public class ProductService {
   }
 
   public void updateProduct(ProductUpdateDto productUpdateDto) {
+    ProductInfoDto productInfo = productRepository.findById(productUpdateDto.getId())
+        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+
+    Member member = memberRepository.findByEmail(
+        SecurityUtil.getLoginUsername()).orElseThrow(()
+        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+
+    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+
     productRepository.updateProduct(productUpdateDto);
   }
 }

@@ -45,6 +45,7 @@ class ProductServiceTest {
   private ProductService productService;
 
   private ProductSaveDto productSaveDto;
+  private ProductInfoDto productInfoDto;
   private Category category;
   private Member member;
 
@@ -70,6 +71,17 @@ class ProductServiceTest {
         .phone("010-1234-5678")
         .address("서울시 강남구")
         .role(Role.USER)
+        .build();
+
+
+    productInfoDto = ProductInfoDto.builder()
+        .id(1L)
+        .title("title")
+        .content("content")
+        .price(10000)
+        .category("TestCategory")
+        .ownerId(1L)
+        .createdDate("2021-08-01")
         .build();
 
     // SecurityContext 설정
@@ -114,15 +126,6 @@ class ProductServiceTest {
   @DisplayName("상품 조회 성공")
   void productFindTest() {
     // given
-    ProductInfoDto productInfoDto = ProductInfoDto.builder()
-        .id(1L)
-        .title("title")
-        .content("content")
-        .price(10000)
-        .category("TestCategory")
-        .ownerId(1L)
-        .createdDate("2021-08-01")
-        .build();
     when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
 
     // when & then
@@ -141,6 +144,8 @@ class ProductServiceTest {
         .category("TestCategory")
         .build();
 
+    when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
+    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(member));
     doNothing().when(productRepository).updateProduct(any(ProductUpdateDto.class));
 
     // when & then
