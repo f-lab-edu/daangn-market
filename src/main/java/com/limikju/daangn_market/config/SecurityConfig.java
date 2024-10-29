@@ -1,5 +1,6 @@
 package com.limikju.daangn_market.config;
 
+import com.limikju.daangn_market.login.CustomLoginAuthenticationEntryPoint;
 import com.limikju.daangn_market.login.Handler.CustomAuthenticationFailureHandler;
 import com.limikju.daangn_market.login.Handler.CustomAuthenticationSuccessHandler;
 import com.limikju.daangn_market.login.filter.CustomAuthenticationFilter;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
@@ -16,14 +18,18 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+  private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+  private final CustomLoginAuthenticationEntryPoint authenticationEntryPoint;
   private final AuthenticationConfiguration authenticationConfiguration;
-  private final CustomAuthenticationFailureHandler customAuthenticationFailureHandlerHandler;
 
   private static final String signUpUrl = "/api/members";
   private static final String loginUrl = "/api/login";
@@ -47,6 +53,8 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
         .addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling(config -> config
+            .authenticationEntryPoint(authenticationEntryPoint))
         .logout(logout -> logout
             .logoutUrl(logoutUrl)
             .logoutSuccessHandler((request, response, authentication) -> response.setStatus(
@@ -67,11 +75,15 @@ public class SecurityConfig {
     CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(
         loginUrl);
     customAuthenticationFilter.setAuthenticationManager(
-        authenticationConfiguration.getAuthenticationManager()
-    );
+        authenticationConfiguration.getAuthenticationManager());
     customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
-    customAuthenticationFilter.setAuthenticationFailureHandler(
-        customAuthenticationFailureHandlerHandler);
+    customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
+
+    customAuthenticationFilter.setSecurityContextRepository(
+        new DelegatingSecurityContextRepository(
+            new RequestAttributeSecurityContextRepository(),
+            new HttpSessionSecurityContextRepository()
+        ));
 
     return customAuthenticationFilter;
   }
