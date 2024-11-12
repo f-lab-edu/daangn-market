@@ -1,8 +1,7 @@
 package com.limikju.daangn_market.service;
 
-import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
-import com.limikju.daangn_market.repository.MemberRepository;
+import com.limikju.daangn_market.repository.mybatis.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,11 +1,13 @@
-package com.limikju.daangn_market.repository;
+package com.limikju.daangn_market.repository.mongo;
 
 import com.limikju.daangn_market.domain.Chat;
 import java.util.List;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+@Repository("chatRepository")
 public interface ChatRepository extends ReactiveMongoRepository<Chat, String> {
 
   @Query("{ productId: ?0, buyerId: ?1 }")

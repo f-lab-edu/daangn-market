@@ -1,4 +1,4 @@
-package com.limikju.daangn_market.repository;
+package com.limikju.daangn_market.repository.mybatis;
 
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
