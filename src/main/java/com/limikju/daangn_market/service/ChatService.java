@@ -42,14 +42,16 @@ public class ChatService {
 
   }
 
-  public Mono<Chat> sendMessage(Long productId, Long senderId, String body) {
+  public Mono<Chat> sendMessage(Long productId, String body) {
 
     Chat chat = Chat.builder()
         .sellerId(productRepository.findById(productId)
             .orElseThrow(() -> new IllegalArgumentException("옳바르지 않은 상품입니다."))
             .getOwnerId())
         .productId(productId)
-        .senderId(senderId)
+        .senderId(memberRepository.findByEmail(
+            SecurityUtil.getLoginUsername()).orElseThrow(()
+            -> new IllegalArgumentException("MEMBER_NOT_FOUND")).getId())
         .type(MessageType.COMMON_MESSAGE)
         .body(body)
         .createdAt(LocalDateTime.now())
@@ -58,14 +60,16 @@ public class ChatService {
     return chatRepository.save(chat);
   }
 
-  public Mono<Chat> sendNegotiation(Long productId, Long senderId, Long price) {
+  public Mono<Chat> sendNegotiation(Long productId, Long price) {
 
     Chat chat = Chat.builder()
         .sellerId(productRepository.findById(productId)
             .orElseThrow(() -> new IllegalArgumentException("옳바르지 않은 상품입니다."))
             .getOwnerId())
         .productId(productId)
-        .senderId(senderId)
+        .senderId(memberRepository.findByEmail(
+            SecurityUtil.getLoginUsername()).orElseThrow(()
+            -> new IllegalArgumentException("MEMBER_NOT_FOUND")).getId())
         .type(MessageType.PRICE_NEGOTIATION)
         .body(price)
         .createdAt(LocalDateTime.now())
