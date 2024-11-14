@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Builder
-@Document(collation = "chat")
+@Document(collection = "chat")
 public class Chat {
 
   @Id

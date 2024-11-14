@@ -113,6 +113,8 @@ public class ChatServiceTest {
   void testSendMessage() {
     when(productRepository.findById(1L)).thenReturn(Optional.of(testProductInfoDto));
     when(chatRepository.save(any(Chat.class))).thenReturn(Mono.just(testChat));
+    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(testMember));
+
 
     Mono<Chat> chatMono = chatService.sendMessage(1L, "Hello");
 
@@ -127,6 +129,8 @@ public class ChatServiceTest {
   @DisplayName("가격 협상 채팅 전송 - 성공")
   void testSendNegotiation() {
     when(productRepository.findById(1L)).thenReturn(Optional.of(testProductInfoDto));
+    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(testMember));
+
     Chat negotiationChat = Chat.builder()
         .sellerId(2L)
         .productId(1L)
@@ -147,7 +151,7 @@ public class ChatServiceTest {
   }
 
   @Test
-  @DisplayName("채팅 전송 - 실패 상품 없음")
+  @DisplayName("채팅 전송 - 실패(상품 없음)")
   void testSendMessageWithInvalidProduct() {
     when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -156,7 +160,7 @@ public class ChatServiceTest {
   }
 
   @Test
-  @DisplayName("가격 협상 채팅 전송 - 실패 상품 없음")
+  @DisplayName("가격 협상 채팅 전송 - 실패(상품 없음)")
   void testSendNegotiationWithInvalidProduct() {
     when(productRepository.findById(1L)).thenReturn(Optional.empty());
 

@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 @Repository("chatRepository")
 public interface ChatRepository extends ReactiveMongoRepository<Chat, String> {
 
-  @Query("{ productId: ?0, buyerId: ?1 }")
+  @Query("{ productId: ?0, $or: [ { buyerId: ?1 }, { sellerId: ?1 } ] }")
   Flux<Chat> findByProductIdAndBuyerId(Long productId, Long buyerId);
 
   @Query("[{ $match: { $or: [ { sellerId: ?0, buyerId: ?1 }, { sellerId: ?1, buyerId: ?0 } ] } }, "

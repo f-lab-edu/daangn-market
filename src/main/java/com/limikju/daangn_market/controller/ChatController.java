@@ -23,13 +23,14 @@ public class ChatController {
 
   @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<Chat> getChats(@RequestParam Long productId) {
-    return chatService.getChats(productId)
+    Flux<Chat> chatFlux = chatService.getChats(productId)
         .subscribeOn(Schedulers.boundedElastic());
+    return chatFlux;
   }
 
   @PostMapping
-  public Mono<Chat> sendMessage(@RequestParam Long productId, @RequestBody String body) {
-    return chatService.sendMessage(productId, body);
+  public Mono<Chat> sendMessage(@RequestParam Long productId, @RequestBody String message) {
+    return chatService.sendMessage(productId, message);
   }
 
   @PostMapping("/negotiation")
