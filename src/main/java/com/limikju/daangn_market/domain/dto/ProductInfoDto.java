@@ -18,10 +18,6 @@ public class ProductInfoDto {
   private String category;
   private Long ownerId;
   private String createdDate;
-
-  public Boolean checkOwner(Long memberId) {
-    return this.ownerId.equals(memberId);
-  }
 }
 
 

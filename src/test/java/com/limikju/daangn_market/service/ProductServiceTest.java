@@ -2,15 +2,12 @@ package com.limikju.daangn_market.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
-import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
-import com.limikju.daangn_market.domain.enums.ProductStatus;
 import com.limikju.daangn_market.domain.enums.Role;
 import com.limikju.daangn_market.repository.CategoryRepository;
 import com.limikju.daangn_market.repository.MemberRepository;
@@ -48,8 +45,6 @@ class ProductServiceTest {
   private ProductService productService;
 
   private ProductSaveDto productSaveDto;
-  private ProductInfoDto productInfoDto;
-  private ProductUpdateDto productUpdateDto;
   private Category category;
   private Member member;
 
@@ -75,24 +70,6 @@ class ProductServiceTest {
         .phone("010-1234-5678")
         .address("서울시 강남구")
         .role(Role.USER)
-        .build();
-
-    productInfoDto = ProductInfoDto.builder()
-        .id(1L)
-        .title("title")
-        .content("content")
-        .price(10000)
-        .category("TestCategory")
-        .ownerId(1L)
-        .createdDate("2021-08-01")
-        .build();
-
-    productUpdateDto = ProductUpdateDto.builder()
-        .id(1L)
-        .title("title")
-        .content("content")
-        .price(10000)
-        .category("TestCategory")
         .build();
 
     // SecurityContext 설정
@@ -137,36 +114,19 @@ class ProductServiceTest {
   @DisplayName("상품 조회 성공")
   void productFindTest() {
     // given
+    ProductInfoDto productInfoDto = ProductInfoDto.builder()
+        .id(1L)
+        .title("title")
+        .content("content")
+        .price(10000)
+        .category("TestCategory")
+        .ownerId(1L)
+        .createdDate("2021-08-01")
+        .build();
     when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
 
     // when & then
     assertDoesNotThrow(() -> productService.findById(1L));
-  }
-
-  @Test
-  @DisplayName("상품 정보 변경 성공")
-  void productUpdateTest() {
-    // given
-
-    when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
-    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(member));
-    doNothing().when(productRepository).updateProduct(any(ProductUpdateDto.class));
-
-    // when & then
-    assertDoesNotThrow(() -> productService.updateProduct(productUpdateDto));
-  }
-
-  @Test
-  @DisplayName("상품 삭제 성공")
-  void productDeleteTest() {
-    // given
-
-    when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
-    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(member));
-    doNothing().when(productRepository).updateStatus(any(Long.class), any(ProductStatus.class));
-
-    // when & then
-    assertDoesNotThrow(() -> productService.delete(1L));
   }
 
   @Test

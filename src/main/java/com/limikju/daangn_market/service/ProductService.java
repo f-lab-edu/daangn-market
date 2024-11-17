@@ -4,8 +4,6 @@ import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
-import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
-import com.limikju.daangn_market.domain.enums.ProductStatus;
 import com.limikju.daangn_market.repository.CategoryRepository;
 import com.limikju.daangn_market.repository.MemberRepository;
 import com.limikju.daangn_market.repository.ProductRepository;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
@@ -48,32 +45,6 @@ public class ProductService {
     ProductInfoDto productInfo = productRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
     return productInfo;
-  }
-
-  public void updateProduct(ProductUpdateDto productUpdateDto) {
-    ProductInfoDto productInfo = productRepository.findById(productUpdateDto.getId())
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
-
-    Member member = memberRepository.findByEmail(
-        SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
-
-    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
-
-    productRepository.updateProduct(productUpdateDto);
-  }
-
-  public void delete(Long id) {
-    ProductInfoDto productInfo = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
-
-    Member member = memberRepository.findByEmail(
-        SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
-
-    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
-
-    productRepository.updateStatus(id, ProductStatus.HIDDEN);
   }
 
   public Page<Map<String, Object>> getList(Pageable pageable) {
