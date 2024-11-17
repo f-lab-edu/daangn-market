@@ -35,4 +35,15 @@
     SET
       sorting_timestamp = NOW()
   </update>
+
+  <select id="getList" parameterType="org.springframework.data.domain.Pageable" resultType="com.limikju.daangn_market.domain.dto.ProductInfoDto">
+    SELECT * FROM PRODUCT
+    ORDER BY sorting_timestamp DESC
+    LIMIT ${offset}, ${pageSize}
+  </select>
+
+  <select id="getListCount" resultType="int">
+    SELECT COUNT(*) AS CNT
+    FROM PRODUCT
+  </select>
 </mapper>

@@ -8,7 +8,12 @@ import com.limikju.daangn_market.repository.CategoryRepository;
 import com.limikju.daangn_market.repository.MemberRepository;
 import com.limikju.daangn_market.repository.ProductRepository;
 import com.limikju.daangn_market.util.secutity.SecurityUtil;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,5 +45,13 @@ public class ProductService {
     ProductInfoDto productInfo = productRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
     return productInfo;
+  }
+
+  public Page<Map<String, Object>> getList(Pageable pageable) {
+
+    List<Map<String, Object>> content = productRepository.getList(pageable);
+    int total = productRepository.getListCount();
+
+    return new PageImpl<>(content, pageable, total);
   }
 }
