@@ -3,13 +3,16 @@ package com.limikju.daangn_market.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
+import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
 import com.limikju.daangn_market.service.ProductService;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +114,45 @@ class ProductControllerTest {
         .andExpect(status().isOk());
   }
 
+  @Test
+  @DisplayName("상품 정보 변경 성공")
+  @WithMockUser(username="test@test.com", password = "Q1w2e3r4!!", roles={"USER"})
+  void updateProduct_success() throws Exception {
+    // given
+    ProductUpdateDto productUpdateDto = ProductUpdateDto.builder()
+        .id(1L)
+        .title("title")
+        .content("content")
+        .price(10000)
+        .category("TestCategory")
+        .build();
+
+    // when
+    doNothing().when(productService).updateProduct(any(ProductUpdateDto.class));
+
+    // then
+    mockMvc.perform(
+            put("/api/products/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productUpdateDto)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("상품 삭제 성공")
+  @WithMockUser(username="test@test.com", password = "Q1w2e3r4!!", roles={"USER"})
+  void deleteProduct_success() throws Exception {
+    // given
+
+    // when
+    doNothing().when(productService).delete(any(Long.class));
+
+    // then
+    mockMvc.perform(
+            delete("/api/products/1"))
+        .andExpect(status().isOk());
+  }
+  
   @Test
   @DisplayName("상품 목록 조회 성공")
   @WithMockUser(username = "test@test.com", password = "Q1w2e3r4!!", roles = {"USER"})
