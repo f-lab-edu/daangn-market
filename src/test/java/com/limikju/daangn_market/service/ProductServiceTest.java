@@ -16,6 +16,8 @@ import com.limikju.daangn_market.repository.CategoryRepository;
 import com.limikju.daangn_market.repository.MemberRepository;
 import com.limikju.daangn_market.repository.ProductRepository;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +27,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -165,5 +167,19 @@ class ProductServiceTest {
 
     // when & then
     assertDoesNotThrow(() -> productService.delete(1L));
+  }
+
+  @Test
+  @DisplayName("상품 목록 조회 성공")
+  void productListTest() {
+    // given
+    Pageable pageable = Pageable.ofSize(10).withPage(0);
+    List<Map<String, Object>> content = new ArrayList<>();
+
+    when(productRepository.getList(any(Pageable.class))).thenReturn(content);
+    when(productRepository.getListCount()).thenReturn(10);
+
+    // when & then
+    assertDoesNotThrow(() -> productService.getList(pageable));
   }
 }
