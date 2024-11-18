@@ -1,7 +1,7 @@
 package com.limikju.daangn_market.service;
 
-import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
+import com.limikju.daangn_market.domain.dto.CategoryInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
 import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -30,8 +29,8 @@ public class ProductService {
 
   public void save(ProductSaveDto productSaveDto) {
     String categoryTitle = productSaveDto.getCategory();
-    Category category = categoryRepository.findByTitle(categoryTitle).orElseThrow(()
-        -> new IllegalArgumentException("CATEGORY_NOT_FOUND"));
+    CategoryInfoDto category = categoryRepository.findByTitle(categoryTitle).orElseThrow(
+        () -> new IllegalArgumentException("CATEGORY_NOT_FOUND"));
 
     if (categoryRepository.hasChild(category.getId())) {
       throw new IllegalArgumentException("CATEGORY_HAS_CHILD");

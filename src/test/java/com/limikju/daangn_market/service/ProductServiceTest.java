@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
+import com.limikju.daangn_market.domain.dto.CategoryInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
 import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
@@ -31,7 +32,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -51,6 +51,7 @@ class ProductServiceTest {
   private ProductSaveDto productSaveDto;
   private ProductInfoDto productInfoDto;
   private ProductUpdateDto productUpdateDto;
+  private CategoryInfoDto categoryInfoDto;
   private Category category;
   private Member member;
 
@@ -96,6 +97,12 @@ class ProductServiceTest {
         .category("TestCategory")
         .build();
 
+    categoryInfoDto = CategoryInfoDto.builder()
+        .id(1L)
+        .title("TestCategory")
+        .parentId(null)
+        .build();
+
     // SecurityContext 설정
     User user = new User("test@gmail.com", "password", new ArrayList<>());
     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -107,7 +114,7 @@ class ProductServiceTest {
   @DisplayName("상품 저장 성공")
   void productSaveTest() {
     // given
-    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(category));
+    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(categoryInfoDto));
     when(categoryRepository.hasChild(category.getId())).thenReturn(false);
     when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(member));
 
@@ -127,7 +134,7 @@ class ProductServiceTest {
   @Test
   @DisplayName("상품 저장 실패 - 카테고리에 자식 카테고리가 있음")
   void save_throwsException_whenCategoryHasChild() {
-    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(category));
+    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(categoryInfoDto));
     when(categoryRepository.hasChild(category.getId())).thenReturn(true);
 
     assertThrows(IllegalArgumentException.class, () ->
