@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CategoryRepository {
   public boolean hasChild(Long id);
 
+  public Optional<CategoryInfoDto> findById(Long id);
+
   public Optional<CategoryInfoDto> findByTitle(String title);
 
   public List<CategoryInfoDto> findAll();
