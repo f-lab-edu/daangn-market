@@ -61,7 +61,7 @@ class ProductServiceTest {
         .title("title")
         .content("content")
         .price(10000)
-        .category("TestCategory")
+        .categoryId(1L)
         .build();
 
     category = Category.builder()
@@ -114,7 +114,7 @@ class ProductServiceTest {
   @DisplayName("상품 저장 성공")
   void productSaveTest() {
     // given
-    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(categoryInfoDto));
+    when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryInfoDto));
     when(categoryRepository.hasChild(category.getId())).thenReturn(false);
     when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(member));
 
@@ -125,7 +125,7 @@ class ProductServiceTest {
   @Test
   @DisplayName("상품 저장 실패 - 카테고리 없음")
   void save_throwsException_whenCategoryNotFound() {
-    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.empty());
+    when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
 
     assertThrows(IllegalArgumentException.class, () ->
         productService.save(productSaveDto), "CATEGORY_NOT_FOUND");
@@ -134,7 +134,7 @@ class ProductServiceTest {
   @Test
   @DisplayName("상품 저장 실패 - 카테고리에 자식 카테고리가 있음")
   void save_throwsException_whenCategoryHasChild() {
-    when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(categoryInfoDto));
+    when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryInfoDto));
     when(categoryRepository.hasChild(category.getId())).thenReturn(true);
 
     assertThrows(IllegalArgumentException.class, () ->

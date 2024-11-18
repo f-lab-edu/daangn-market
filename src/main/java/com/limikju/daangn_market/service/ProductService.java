@@ -27,9 +27,8 @@ public class ProductService {
   private final CategoryRepository categoryRepository;
   private final MemberRepository memberRepository;
 
-  public void save(ProductSaveDto productSaveDto) {
-    String categoryTitle = productSaveDto.getCategory();
-    CategoryInfoDto category = categoryRepository.findByTitle(categoryTitle).orElseThrow(
+  public void save(ProductSaveDto productSaveDto) {;
+    CategoryInfoDto category = categoryRepository.findById(productSaveDto.getCategoryId()).orElseThrow(
         () -> new IllegalArgumentException("CATEGORY_NOT_FOUND"));
 
     if (categoryRepository.hasChild(category.getId())) {

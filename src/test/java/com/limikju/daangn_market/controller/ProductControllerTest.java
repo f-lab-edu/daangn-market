@@ -59,7 +59,7 @@ class ProductControllerTest {
         .title("title")
         .content("content")
         .price(10000)
-        .category("하의")
+        .categoryId(1L)
         .build();
 
     // when
@@ -81,7 +81,7 @@ class ProductControllerTest {
     ProductSaveDto productSaveDto = ProductSaveDto.builder()
         .content("Sample Content")
         .price(10000)
-        .category("TestCategory")
+        .categoryId(1L)
         .build();  // title 누락
 
     // when & then

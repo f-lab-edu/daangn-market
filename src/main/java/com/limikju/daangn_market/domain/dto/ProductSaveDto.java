@@ -10,8 +10,8 @@ import lombok.Getter;
 @Builder
 public class ProductSaveDto {
 
-  @NotBlank(message = "카테고리를 입력해주세요")
-  private String category;
+  @NotNull(message = "카테고리를 입력해주세요")
+  private Long categoryId;
 
   @NotBlank(message = "제목을 입력해주세요")
   private String title;
