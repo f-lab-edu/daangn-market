@@ -10,7 +10,15 @@
     );
   </select>
 
-  <select id="findByTitle" resultType="com.limikju.daangn_market.domain.Category">
+  <select id="findById" resultType="com.limikju.daangn_market.domain.dto.CategoryInfoDto">
+    SELECT * FROM CATEGORY WHERE id = #{id}
+  </select>
+
+  <select id="findByTitle" resultType="com.limikju.daangn_market.domain.dto.CategoryInfoDto">
     SELECT * FROM CATEGORY WHERE title = #{title}
+  </select>
+
+  <select id="findAll" resultType="com.limikju.daangn_market.domain.dto.CategoryInfoDto">
+    SELECT * FROM CATEGORY
   </select>
 </mapper>
