@@ -1,5 +1,7 @@
 package com.limikju.daangn_market.service;
 
+import com.limikju.daangn_market.common.code.ErrorStatus;
+import com.limikju.daangn_market.common.exception.handler.MemberHandler;
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
@@ -37,9 +39,8 @@ public class ProductService {
       throw new IllegalArgumentException("CATEGORY_HAS_CHILD");
     }
 
-    Member owner = memberRepository.findByEmail(
-        SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+    Member owner = memberRepository.findByEmail(SecurityUtil.getLoginUsername())
+        .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
     productRepository.save(owner.getId(), category.getId(), productSaveDto.getTitle(),
         productSaveDto.getContent(), productSaveDto.getPrice());
@@ -55,11 +56,12 @@ public class ProductService {
     ProductInfoDto productInfo = productRepository.findById(productUpdateDto.getId())
         .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
 
-    Member member = memberRepository.findByEmail(
-        SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+    Member member = memberRepository.findByEmail(SecurityUtil.getLoginUsername())
+        .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+    if(productInfo.checkOwner(member.getId())) {
+      throw new IllegalArgumentException("OWNER_MISMATCH");
+    }
 
     productRepository.updateProduct(productUpdateDto);
   }
@@ -68,11 +70,12 @@ public class ProductService {
     ProductInfoDto productInfo = productRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
 
-    Member member = memberRepository.findByEmail(
-        SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+    Member member = memberRepository.findByEmail(SecurityUtil.getLoginUsername())
+        .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+    if(productInfo.checkOwner(member.getId())) {
+      throw new IllegalArgumentException("OWNER_MISMATCH");
+    }
 
     productRepository.updateStatus(id, ProductStatus.HIDDEN);
   }

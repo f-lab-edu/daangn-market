@@ -1,5 +1,7 @@
 package com.limikju.daangn_market.login;
 
+import com.limikju.daangn_market.common.code.ErrorStatus;
+import com.limikju.daangn_market.common.exception.handler.MemberHandler;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     Member entity = (Member) memberService.loadUserByUsername(loginId);
 
     if(!passwordEncoder.matches(password, entity.getPassword())) {
-      throw new BadCredentialsException("INVALID_PASSWORD");
+      throw new MemberHandler(ErrorStatus.MEMBER_INVALID_PASSWORD);
     }
 
     return new CustomAuthenticationToken(entity, null, entity.getAuthorities());
