@@ -2,6 +2,7 @@ package com.limikju.daangn_market.repository.mybatis;
 
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
+import com.limikju.daangn_market.domain.enums.ProductStatus;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public interface ProductRepository {
   public Optional<ProductInfoDto> findById(Long id);
   List<Map<String, Object>> getList(Pageable pageable);
   int getListCount();
-  public void updateStatus(Long id);
+  public void updateStatus(Long id, ProductStatus status);
   public void updateProduct(ProductUpdateDto productUpdateDto);
   public void updateSortingTimestamp(Long id);
 }

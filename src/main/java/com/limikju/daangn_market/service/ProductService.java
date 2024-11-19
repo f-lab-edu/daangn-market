@@ -10,11 +10,14 @@ import com.limikju.daangn_market.repository.mybatis.ProductRepository;
 import com.limikju.daangn_market.util.secutity.SecurityUtil;
 import java.util.List;
 import java.util.Map;
+import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
+import com.limikju.daangn_market.domain.enums.ProductStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +48,32 @@ public class ProductService {
     ProductInfoDto productInfo = productRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
     return productInfo;
+  }
+
+  public void updateProduct(ProductUpdateDto productUpdateDto) {
+    ProductInfoDto productInfo = productRepository.findById(productUpdateDto.getId())
+        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+
+    Member member = memberRepository.findByEmail(
+        SecurityUtil.getLoginUsername()).orElseThrow(()
+        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+
+    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+
+    productRepository.updateProduct(productUpdateDto);
+  }
+
+  public void delete(Long id) {
+    ProductInfoDto productInfo = productRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+
+    Member member = memberRepository.findByEmail(
+        SecurityUtil.getLoginUsername()).orElseThrow(()
+        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+
+    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+
+    productRepository.updateStatus(id, ProductStatus.HIDDEN);
   }
 
   public Page<Map<String, Object>> getList(Pageable pageable) {

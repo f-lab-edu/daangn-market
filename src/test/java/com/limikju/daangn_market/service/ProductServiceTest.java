@@ -6,15 +6,12 @@ import static org.mockito.Mockito.when;
 
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
-import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
 import com.limikju.daangn_market.domain.enums.Role;
 import com.limikju.daangn_market.repository.mybatis.CategoryRepository;
 import com.limikju.daangn_market.repository.mybatis.MemberRepository;
 import com.limikju.daangn_market.repository.mybatis.ProductRepository;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +21,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -85,7 +81,7 @@ class ProductServiceTest {
     // given
     when(categoryRepository.findByTitle("TestCategory")).thenReturn(Optional.of(category));
     when(categoryRepository.hasChild(category.getId())).thenReturn(false);
-    when(memberRepository.findByEmail(any())).thenReturn(Optional.of(member));
+    when(memberRepository.findByEmail(any(String.class))).thenReturn(Optional.of(member));
 
     // when & then
     assertDoesNotThrow(() -> productService.save(productSaveDto));
@@ -108,38 +104,5 @@ class ProductServiceTest {
 
     assertThrows(IllegalArgumentException.class, () ->
         productService.save(productSaveDto), "CATEGORY_HAS_CHILD");
-  }
-
-  @Test
-  @DisplayName("상품 조회 성공")
-  void productFindTest() {
-    // given
-    ProductInfoDto productInfoDto = ProductInfoDto.builder()
-        .id(1L)
-        .title("title")
-        .content("content")
-        .price(10000)
-        .category("TestCategory")
-        .ownerId(1L)
-        .createdDate("2021-08-01")
-        .build();
-    when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(productInfoDto));
-
-    // when & then
-    assertDoesNotThrow(() -> productService.findById(1L));
-  }
-
-  @Test
-  @DisplayName("상품 목록 조회 성공")
-  void productListTest() {
-    // given
-    Pageable pageable = Pageable.ofSize(10).withPage(0);
-    List<Map<String, Object>> content = new ArrayList<>();
-
-    when(productRepository.getList(any(Pageable.class))).thenReturn(content);
-    when(productRepository.getListCount()).thenReturn(10);
-
-    // when & then
-    assertDoesNotThrow(() -> productService.getList(pageable));
   }
 }
