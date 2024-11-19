@@ -22,6 +22,10 @@ public enum ErrorStatus {
   // 카테고리 관련 에러
   CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY4001", "존재하지 않는 카테고리 입니다."),
   CATEGORY_HAS_CHILD(HttpStatus.CONFLICT, "CATEGORY4002", "하위 카테고리가 존재합니다."),
+
+  // 상품 관련 에러
+  PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT4001", "존재하지 않는 상품 입니다."),
+  PRODUCT_OWNER_MISMATCH(HttpStatus.BAD_REQUEST, "PRODUCT4002", "상품에 대한 권한이 없습니다."),
   ;
 
   private final HttpStatus httpStatus;

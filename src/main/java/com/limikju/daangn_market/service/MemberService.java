@@ -2,7 +2,6 @@ package com.limikju.daangn_market.service;
 
 import com.limikju.daangn_market.common.code.ErrorStatus;
 import com.limikju.daangn_market.common.exception.handler.MemberHandler;
-import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import com.limikju.daangn_market.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

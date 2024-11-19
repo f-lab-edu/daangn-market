@@ -3,6 +3,7 @@ package com.limikju.daangn_market.service;
 import com.limikju.daangn_market.common.code.ErrorStatus;
 import com.limikju.daangn_market.common.exception.handler.CategoryHandler;
 import com.limikju.daangn_market.common.exception.handler.MemberHandler;
+import com.limikju.daangn_market.common.exception.handler.ProductHandler;
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
@@ -19,9 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
@@ -48,20 +47,19 @@ public class ProductService {
   }
 
   public ProductInfoDto findById(Long id) {
-    ProductInfoDto productInfo = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
-    return productInfo;
+    return productRepository.findById(id)
+        .orElseThrow(() -> new ProductHandler(ErrorStatus.PRODUCT_NOT_FOUND));
   }
 
   public void updateProduct(ProductUpdateDto productUpdateDto) {
     ProductInfoDto productInfo = productRepository.findById(productUpdateDto.getId())
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+        .orElseThrow(() -> new ProductHandler(ErrorStatus.PRODUCT_NOT_FOUND));
 
     Member member = memberRepository.findByEmail(SecurityUtil.getLoginUsername())
         .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
     if(productInfo.checkOwner(member.getId())) {
-      throw new IllegalArgumentException("OWNER_MISMATCH");
+      throw new ProductHandler(ErrorStatus.PRODUCT_OWNER_MISMATCH);
     }
 
     productRepository.updateProduct(productUpdateDto);
@@ -69,13 +67,13 @@ public class ProductService {
 
   public void delete(Long id) {
     ProductInfoDto productInfo = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+        .orElseThrow(() -> new ProductHandler(ErrorStatus.PRODUCT_NOT_FOUND));
 
     Member member = memberRepository.findByEmail(SecurityUtil.getLoginUsername())
         .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
     if(productInfo.checkOwner(member.getId())) {
-      throw new IllegalArgumentException("OWNER_MISMATCH");
+      throw new ProductHandler(ErrorStatus.PRODUCT_OWNER_MISMATCH);
     }
 
     productRepository.updateStatus(id, ProductStatus.HIDDEN);
