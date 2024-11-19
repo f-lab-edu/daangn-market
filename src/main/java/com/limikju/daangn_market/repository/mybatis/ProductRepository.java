@@ -1,8 +1,6 @@
-package com.limikju.daangn_market.repository;
+package com.limikju.daangn_market.repository.mybatis;
 
-import com.limikju.daangn_market.domain.Product;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
-import com.limikju.daangn_market.domain.dto.ProductSaveDto;
 import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
 import com.limikju.daangn_market.domain.enums.ProductStatus;
 import java.util.List;

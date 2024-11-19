@@ -3,7 +3,7 @@ package com.limikju.daangn_market.service;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import com.limikju.daangn_market.domain.enums.Role;
-import com.limikju.daangn_market.repository.MemberRepository;
+import com.limikju.daangn_market.repository.mybatis.MemberRepository;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

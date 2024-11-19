@@ -4,19 +4,18 @@ import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
-import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
-import com.limikju.daangn_market.domain.enums.ProductStatus;
-import com.limikju.daangn_market.repository.CategoryRepository;
-import com.limikju.daangn_market.repository.MemberRepository;
-import com.limikju.daangn_market.repository.ProductRepository;
-import com.limikju.daangn_market.util.security.SecurityUtil;
+import com.limikju.daangn_market.repository.mybatis.CategoryRepository;
+import com.limikju.daangn_market.repository.mybatis.MemberRepository;
+import com.limikju.daangn_market.repository.mybatis.ProductRepository;
+import com.limikju.daangn_market.util.secutity.SecurityUtil;
 import java.util.List;
 import java.util.Map;
+import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
+import com.limikju.daangn_market.domain.enums.ProductStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -25,8 +24,8 @@ import org.springframework.util.Assert;
 public class ProductService {
 
   private final ProductRepository productRepository;
-  private final CategoryRepository categoryRepository;
   private final MemberRepository memberRepository;
+  private final CategoryRepository categoryRepository;
 
   public void save(ProductSaveDto productSaveDto) {
     String categoryTitle = productSaveDto.getCategory();

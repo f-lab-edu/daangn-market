@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.limikju.daangn_market.repository.ProductRepository">
-  <insert id="save" parameterType="com.limikju.daangn_market.domain.dto.ProductSaveDto">
+<mapper namespace="com.limikju.daangn_market.repository.mybatis.ProductRepository">
+  <insert id="save">
     INSERT INTO PRODUCT(owner_id, category_id, title, content, price)
-    VALUES(#{ownerId}, #{category.id}, #{title}, #{content}, #{price})
+    VALUES(#{ownerId}, #{categoryId}, #{title}, #{content}, #{price})
   </insert>
 
-  <select id="findById" resultType="com.limikju.daangn_market.domain.Product">
+  <select id="findById" resultType="com.limikju.daangn_market.domain.dto.ProductInfoDto">
     SELECT * FROM PRODUCT WHERE id = #{id}
-  </select>
-
-  <select id="getList" parameterType="org.springframework.data.domain.Pageable" resultType="com.limikju.daangn_market.domain.dto.ProductInfoDto">
-    SELECT * FROM PRODUCT
-    ORDER BY sorting_timestamp DESC
-    LIMIT ${offset}, ${pageSize}
-  </select>
-
-  <select id="getListCount" resultType="int">
-    SELECT COUNT(*) AS CNT
-    FROM PRODUCT
   </select>
 
   <update id="updateStatus">
@@ -46,4 +35,15 @@
     SET
       sorting_timestamp = NOW()
   </update>
+
+  <select id="getList" parameterType="org.springframework.data.domain.Pageable" resultType="com.limikju.daangn_market.domain.dto.ProductInfoDto">
+    SELECT * FROM PRODUCT
+    ORDER BY sorting_timestamp DESC
+    LIMIT ${offset}, ${pageSize}
+  </select>
+
+  <select id="getListCount" resultType="int">
+    SELECT COUNT(*) AS CNT
+    FROM PRODUCT
+  </select>
 </mapper>

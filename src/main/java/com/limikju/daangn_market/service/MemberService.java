@@ -1,8 +1,7 @@
 package com.limikju.daangn_market.service;
 
-import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
-import com.limikju.daangn_market.repository.MemberRepository;
+import com.limikju.daangn_market.repository.mybatis.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +28,6 @@ public class MemberService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
     return memberRepository.findByEmail(email)
         .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용장 입니다."));
   }

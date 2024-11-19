@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(value = "com.limikju.daangn_market.repository", sqlSessionFactoryRef = "SqlSessionFactory")
+@MapperScan(value = "com.limikju.daangn_market.repository.mybatis", sqlSessionFactoryRef = "SqlSessionFactory")
 @EnableTransactionManagement
 public class MyBatisConfig {
 
