@@ -18,6 +18,10 @@ public enum ErrorStatus {
   MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "존재하지 않는 사용자 입니다."),
   MEMBER_INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "MEMBER4002", "비밀번호가 옳지 않습니다."),
   MEMBER_EMAIL_ALREADY_EXIST(HttpStatus.CONFLICT, "MEMBER4003", "이미 존재하는 사용자입니다."),
+
+  // 카테고리 관련 에러
+  CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY4001", "존재하지 않는 카테고리 입니다."),
+  CATEGORY_HAS_CHILD(HttpStatus.CONFLICT, "CATEGORY4002", "하위 카테고리가 존재합니다."),
   ;
 
   private final HttpStatus httpStatus;

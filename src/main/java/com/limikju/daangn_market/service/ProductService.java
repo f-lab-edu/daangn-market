@@ -1,6 +1,7 @@
 package com.limikju.daangn_market.service;
 
 import com.limikju.daangn_market.common.code.ErrorStatus;
+import com.limikju.daangn_market.common.exception.handler.CategoryHandler;
 import com.limikju.daangn_market.common.exception.handler.MemberHandler;
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
@@ -33,10 +34,10 @@ public class ProductService {
   public void save(ProductSaveDto productSaveDto) {
     String categoryTitle = productSaveDto.getCategory();
     Category category = categoryRepository.findByTitle(categoryTitle).orElseThrow(()
-        -> new IllegalArgumentException("CATEGORY_NOT_FOUND"));
+        -> new CategoryHandler(ErrorStatus.CATEGORY_NOT_FOUND));
 
     if (categoryRepository.hasChild(category.getId())) {
-      throw new IllegalArgumentException("CATEGORY_HAS_CHILD");
+      throw new CategoryHandler(ErrorStatus.CATEGORY_HAS_CHILD);
     }
 
     Member owner = memberRepository.findByEmail(SecurityUtil.getLoginUsername())
