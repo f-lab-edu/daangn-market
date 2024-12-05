@@ -1,5 +1,7 @@
 package com.limikju.daangn_market.controller;
 
+import com.limikju.daangn_market.apiPayload.ApiResponse;
+import com.limikju.daangn_market.apiPayload.code.status.SuccessStatus;
 import com.limikju.daangn_market.domain.dto.MemberSignUpDto;
 import com.limikju.daangn_market.service.MemberService;
 import jakarta.validation.Valid;
@@ -19,8 +21,8 @@ public class MemberController {
   private final MemberService memberService;
 
   @PostMapping
-  public ResponseEntity<?> singUp(@RequestBody @Valid MemberSignUpDto memberSignUpDto) {
+  public ApiResponse<?> singUp(@RequestBody @Valid MemberSignUpDto memberSignUpDto) {
     memberService.join(memberSignUpDto);
-    return new ResponseEntity(HttpStatus.CREATED);
+    return ApiResponse.of(SuccessStatus.MEMBER_JOIN);
   }
 }
