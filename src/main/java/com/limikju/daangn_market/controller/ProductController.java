@@ -1,5 +1,7 @@
 package com.limikju.daangn_market.controller;
 
+import com.limikju.daangn_market.apiPayload.ApiResponse;
+import com.limikju.daangn_market.apiPayload.code.status.SuccessStatus;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
 import com.limikju.daangn_market.domain.dto.ProductSaveDto;
 import com.limikju.daangn_market.domain.dto.ProductUpdateDto;
@@ -29,32 +31,32 @@ public class ProductController {
   private final ProductService productService;
 
   @PostMapping
-  public ResponseEntity<?> save(@RequestBody @Validated ProductSaveDto productSaveDto) {
+  public ApiResponse<?> save(@RequestBody @Validated ProductSaveDto productSaveDto) {
     productService.save(productSaveDto);
-    return new ResponseEntity(HttpStatus.CREATED);
+    return ApiResponse.of(SuccessStatus.PRODUCT_SAVE);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> find(@PathVariable Long id) {
+  public ApiResponse<?> find(@PathVariable Long id) {
     ProductInfoDto productInfoDto = productService.findById(id);
-    return ResponseEntity.ok(productInfoDto);
+    return ApiResponse.of(SuccessStatus.PRODUCT_GET_ONE, productInfoDto);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Validated ProductUpdateDto productUpdateDto) {
+  public ApiResponse<?> update(@PathVariable Long id, @RequestBody @Validated ProductUpdateDto productUpdateDto) {
     productService.updateProduct(productUpdateDto);
-    return new ResponseEntity(HttpStatus.OK);
+    return ApiResponse.of(SuccessStatus.PRODUCT_UPDATE);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> delete(@PathVariable Long id) {
+  public ApiResponse<?> delete(@PathVariable Long id) {
     productService.delete(id);
-    return new ResponseEntity(HttpStatus.OK);
+    return ApiResponse.of(SuccessStatus.PRODUCT_DELETE);
   }
 
   @GetMapping
-  public ResponseEntity<?> list(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+  public ApiResponse<?> list(@PageableDefault(size = 10, page = 0) Pageable pageable) {
     Page<Map<String, Object>> list = productService.getList(pageable);
-    return ResponseEntity.ok(list);
+    return ApiResponse.of(SuccessStatus.PRODUCT_GET_LIST, list);
   }
 }

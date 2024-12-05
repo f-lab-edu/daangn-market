@@ -1,5 +1,9 @@
 package com.limikju.daangn_market.service;
 
+import com.limikju.daangn_market.apiPayload.code.status.ErrorStatus;
+import com.limikju.daangn_market.apiPayload.exception.handler.CategoryHandler;
+import com.limikju.daangn_market.apiPayload.exception.handler.MemberHandler;
+import com.limikju.daangn_market.apiPayload.exception.handler.ProductHandler;
 import com.limikju.daangn_market.domain.Category;
 import com.limikju.daangn_market.domain.Member;
 import com.limikju.daangn_market.domain.dto.ProductInfoDto;
@@ -31,15 +35,15 @@ public class ProductService {
   public void save(ProductSaveDto productSaveDto) {
     String categoryTitle = productSaveDto.getCategory();
     Category category = categoryRepository.findByTitle(categoryTitle).orElseThrow(()
-        -> new IllegalArgumentException("CATEGORY_NOT_FOUND"));
+        -> new CategoryHandler(ErrorStatus.CATEGORY_NOT_FOUND));
 
     if (categoryRepository.hasChild(category.getId())) {
-      throw new IllegalArgumentException("CATEGORY_HAS_CHILD");
+      throw new CategoryHandler(ErrorStatus.CATEGORY_NOT_FOUND);
     }
 
     Member owner = memberRepository.findByEmail(
         SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+        -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
     productRepository.save(owner.getId(), category.getId(), productSaveDto.getTitle(),
         productSaveDto.getContent(), productSaveDto.getPrice());
@@ -47,32 +51,36 @@ public class ProductService {
 
   public ProductInfoDto findById(Long id) {
     ProductInfoDto productInfo = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+        .orElseThrow(() -> new ProductHandler(ErrorStatus.PRODUCT_NOT_FOUND));
     return productInfo;
   }
 
   public void updateProduct(ProductUpdateDto productUpdateDto) {
     ProductInfoDto productInfo = productRepository.findById(productUpdateDto.getId())
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+        .orElseThrow(() -> new ProductHandler(ErrorStatus.PRODUCT_NOT_FOUND));
 
     Member member = memberRepository.findByEmail(
         SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+        -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+    if(productInfo.checkOwner(member.getId())){
+      throw new ProductHandler(ErrorStatus.PRODUCT_OWNER_MISMATCH);
+    }
 
     productRepository.updateProduct(productUpdateDto);
   }
 
   public void delete(Long id) {
     ProductInfoDto productInfo = productRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("PRODUCT_NOT_FOUND"));
+        .orElseThrow(() -> new ProductHandler(ErrorStatus.PRODUCT_NOT_FOUND));
 
     Member member = memberRepository.findByEmail(
         SecurityUtil.getLoginUsername()).orElseThrow(()
-        -> new IllegalArgumentException("MEMBER_NOT_FOUND"));
+        -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-    Assert.isTrue(productInfo.checkOwner(member.getId()), "OWNER_MISMATCH");
+    if(productInfo.checkOwner(member.getId())){
+      throw new ProductHandler(ErrorStatus.PRODUCT_OWNER_MISMATCH);
+    }
 
     productRepository.updateStatus(id, ProductStatus.HIDDEN);
   }

@@ -17,7 +17,16 @@ public enum ErrorStatus implements BaseErrorCode {
   _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
   // 멤버 관련 에러
-  MEMBER_EMAIL_ALREADY_EXIST(HttpStatus.CONFLICT, "MEMBER4000", "이미 존재하는 사용자입니다."),
+  MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4000", "사용자를 찾을 수 없습니다."),
+  MEMBER_EMAIL_ALREADY_EXIST(HttpStatus.CONFLICT, "MEMBER4001", "이미 존재하는 사용자입니다."),
+
+  // 카테고리 관련 에러
+  CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY4000", "카테고리를 찾을 수 없습니다."),
+  CATEGORY_HAS_CHILD(HttpStatus.CONFLICT, "CATEGORY4001", "하위 카테고리가 존재합니다."),
+
+  // 상품 관련 에러
+  PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT4000", "상품을 찾을 수 없습니다."),
+  PRODUCT_OWNER_MISMATCH(HttpStatus.FORBIDDEN, "PRODUCT4001", "상품 소유자가 아닙니다."),
   ;
 
   private final HttpStatus httpStatus;

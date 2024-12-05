@@ -15,6 +15,13 @@ public enum SuccessStatus implements BaseCode {
 
   // 회원 관련 응답
   MEMBER_JOIN(HttpStatus.OK, "MEMBER2000", "회원 가입 성공"),
+
+  // 상품 관련 응답
+  PRODUCT_SAVE(HttpStatus.OK, "PRODUCT2000", "상품 저장 성공"),
+  PRODUCT_GET_ONE(HttpStatus.OK, "PRODUCT2001", "상품 단건 조회 성공"),
+  PRODUCT_GET_LIST(HttpStatus.OK, "PRODUCT2002", "상품 목록 조회 성공"),
+  PRODUCT_UPDATE(HttpStatus.OK, "PRODUCT2003", "상품 수정 성공"),
+  PRODUCT_DELETE(HttpStatus.OK, "PRODUCT2004", "상품 삭제 성공"),
   ;
 
   private final HttpStatus httpStatus;
